@@ -31,7 +31,7 @@ function setup() {
 }
 
 function updateValues() {
-  select('#width-value').html(widthSlider.value());
+  select('#width-value').html(`${widthSlider.value()} cm`);
   select('#depth-value').html(depthSlider.value());
   select('#load-value').html(loadSlider.value());
 }
