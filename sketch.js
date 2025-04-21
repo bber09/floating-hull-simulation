@@ -58,24 +58,31 @@ function draw() {
   const submergedDepth = floats ? load / w : d;
   const buoyantForce = submergedDepth * w;
 
-  // Draw hull
+  // Compute water‑line and shape vertical position
+  const waterline = height / 2;
+  // Center the shape so that when submergedDepth=0 its bottom sits on the waterline,
+  // and when submergedDepth=d its top sits on the waterline.
+  const shapeY = waterline - (d / 2 - submergedDepth);
+
+  // Draw hull at new vertical position
   push();
-  translate(width / 2, height / 2);
-  noStroke();
-  fill(150);
-  if (shape === 'Rectangle') {
-    rect(-w / 2, -d / 2, w, d);
-  } else if (shape === 'Triangle') {
-    triangle(-w / 2, d / 2, w / 2, d / 2, 0, -d / 2);
-  } else if (shape === 'Semi-circle') {
-    arc(0, d / 2, w, d * 2, PI, 0);
-  }
+    translate(width / 2, shapeY);
+    noStroke();
+    fill(150);
+    if (shape === 'Rectangle') {
+      rect(-w / 2, -d / 2, w, d);
+    } else if (shape === 'Triangle') {
+      triangle(-w / 2, d / 2, w / 2, d / 2, 0, -d / 2);
+    } else if (shape === 'Semi-circle') {
+      // note: this draws the top half of a circle of radius d
+      arc(0, d / 2, w, d * 2, PI, 0);
+    }
   pop();
 
-  // Draw water overlay
+  // Draw water overlay to cover the underwater portion
   noStroke();
   fill(0, 120, 200, 150);
-  rect(0, height / 2, width, height / 2);
+  rect(0, waterline, width, height / 2);
 
   // Update result display
   buoyantForceP.html(`Buoyant Force: ${buoyantForce.toFixed(1)} units`);
