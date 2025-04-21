@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Floating Hull Simulation</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Floating Hull Simulation</h1>
+    <section id="objectives">
+      <h2>Learning Objectives</h2>
+      <ul>
+        <li>Understand how buoyant force relates to displaced water volume.</li>
+        <li>Explore how hull shape, width, and depth affect flotation.</li>
+        <li>Observe pressure distribution and resulting floating depth.</li>
+      </ul>
+    </section>
+    <section id="instructions">
+      <h2>Instructions</h2>
+      <ol>
+        <li>Select a hull shape from the dropdown.</li>
+        <li>Adjust the width and depth sliders to change the hull dimensions.</li>
+        <li>Set the load slider to add mass onto the hull.</li>
+        <li>Predict whether the hull will float or sink, then observe the result.</li>
+        <li>Click "Reset" to clear and try new configurations.</li>
+      </ol>
+    </section>
+  </header>
+  <main>
+    <div id="canvas-holder"></div>
+    <div id="controls">
+      <label for="shape-select">Shape:</label>
+      <select id="shape-select"></select>
+      <br>
+      <label for="width-slider">Width:</label>
+      <input type="range" id="width-slider" min="50" max="200" value="100">
+      <span id="width-value">100</span> px
+      <br>
+      <label for="depth-slider">Depth:</label>
+      <input type="range" id="depth-slider" min="20" max="150" value="60">
+      <span id="depth-value">60</span> px
+      <br>
+      <label for="load-slider">Load:</label>
+      <input type="range" id="load-slider" min="0" max="1000" value="300">
+      <span id="load-value">300</span> g
+      <br>
+      <button id="reset-button">Reset</button>
+    </div>
+    <section id="results">
+      <h2>Results</h2>
+      <p id="buoyant-force">Buoyant Force: --</p>
+      <p id="submerged-depth">Submerged Depth: --</p>
+      <p id="outcome">Outcome: --</p>
+    </section>
+  </main>
+  <script src="sketch.js"></script>
+</body>
+</html>

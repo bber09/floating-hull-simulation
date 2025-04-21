@@ -1,0 +1,84 @@
+let shapeSelect, widthSlider, depthSlider, loadSlider, resetButton;
+let buoyantForceP, submergedDepthP, outcomeP;
+
+function setup() {
+  const canvas = createCanvas(600, 400);
+  canvas.parent('canvas-holder');
+  frameRate(30);
+
+  // Grab controls and result elements
+  shapeSelect = select('#shape-select');
+  widthSlider = select('#width-slider');
+  depthSlider = select('#depth-slider');
+  loadSlider = select('#load-slider');
+  resetButton = select('#reset-button');
+  buoyantForceP = select('#buoyant-force');
+  submergedDepthP = select('#submerged-depth');
+  outcomeP = select('#outcome');
+
+  // Populate shape options
+  ['Rectangle', 'Triangle', 'Semi-circle'].forEach(s => shapeSelect.option(s));
+
+  // Attach event listeners
+  widthSlider.input(updateValues);
+  depthSlider.input(updateValues);
+  loadSlider.input(updateValues);
+  shapeSelect.changed(updateValues);
+  resetButton.mousePressed(resetSimulation);
+
+  // Initial display
+  updateValues();
+}
+
+function updateValues() {
+  select('#width-value').html(widthSlider.value());
+  select('#depth-value').html(depthSlider.value());
+  select('#load-value').html(loadSlider.value());
+}
+
+function resetSimulation() {
+  widthSlider.value(100);
+  depthSlider.value(60);
+  loadSlider.value(300);
+  updateValues();
+}
+
+function draw() {
+  background(240);
+
+  // Retrieve values
+  const shape = shapeSelect.value();
+  const w = Number(widthSlider.value());
+  const d = Number(depthSlider.value());
+  const load = Number(loadSlider.value());
+
+  // Physics calculations
+  const maxDisplacement = w * d;
+  const floats = load <= maxDisplacement;
+  const submergedDepth = floats ? load / w : d;
+  const buoyantForce = submergedDepth * w;
+
+  // Draw hull
+  push();
+  translate(width / 2, height / 2);
+  noStroke();
+  fill(150);
+  if (shape === 'Rectangle') {
+    rect(-w / 2, -d / 2, w, d);
+  } else if (shape === 'Triangle') {
+    triangle(-w / 2, d / 2, w / 2, d / 2, 0, -d / 2);
+  } else if (shape === 'Semi-circle') {
+    arc(0, d / 2, w, d * 2, PI, 0);
+  }
+  pop();
+
+  // Draw water overlay
+  noStroke();
+  fill(0, 120, 200, 150);
+  rect(0, height / 2, width, height / 2);
+
+  // Update result display
+  buoyantForceP.html(`Buoyant Force: ${buoyantForce.toFixed(1)} units`);
+  submergedDepthP.html(`Submerged Depth: ${submergedDepth.toFixed(1)} px`);
+  outcomeP.html(`Outcome: ${floats ? 'Floats' : 'Sinks'}`);
+}
