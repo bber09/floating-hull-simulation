@@ -74,7 +74,7 @@ function draw() {
     } else if (shape === 'Triangle') {
       triangle(-w / 2, d / 2, w / 2, d / 2, 0, -d / 2);
     } else if (shape === 'Semi-circle') {
-      // note: this draws the top half of a circle of radius d
+      // note: this draws the top half of a circle of radius = d
       arc(0, d / 2, w, d * 2, PI, 0);
     }
   pop();
@@ -83,6 +83,32 @@ function draw() {
   noStroke();
   fill(0, 120, 200, 150);
   rect(0, waterline, width, height / 2);
+
+  // --- COMPUTE & DRAW CENTROID ---
+  let cx = 0, cy = 0;
+  if (shape === 'Rectangle') {
+    // centroid of a rectangle drawn around (0,0)
+    cx = 0;
+    cy = 0;
+  } else if (shape === 'Triangle') {
+    // vertices at (-w/2, d/2), (w/2, d/2), (0, -d/2)
+    cy = ( d/2 + d/2 - d/2 ) / 3; // = d/6
+  } else if (shape === 'Semi-circle') {
+    // radius in y-direction = d
+    // centroid of a semicircle above its diameter: 4R/(3π) from the flat side
+    // flat side here is at local y = d/2
+    const R = d;
+    cy = d/2 - (4 * R) / (3 * PI);
+  }
+
+  // Draw the centroid marker
+  push();
+    translate(width / 2, shapeY);
+    noStroke();
+    fill(255, 0, 0);
+    ellipse(cx, cy, 10, 10);
+  pop();
+  // -----------------------------------
 
   // Update result display
   buoyantForceP.html(`Buoyant Force: ${buoyantForce.toFixed(1)} units`);
