@@ -7,3 +7,14 @@ canvas {
   display: block;
   margin: 0 auto;
 }
+
+ul, ol {
+  padding-left: 1.2em;
+  margin-left: 0;
+  list-style-position: outside;
+}
+
+li {
+  margin-bottom: 0.5em;
+  text-indent: 0;
+}
